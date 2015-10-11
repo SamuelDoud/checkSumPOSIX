@@ -1,0 +1,45 @@
+This assignment calls for two types of programs to calculate the 8-bit checksum of a file. The first type of program uses processes to break apart the file
+into a number of chunks. The same holds for the second program, however, instead of processes, threads are used.
+
+The two programs use the same function to compute the checkSum of a chunk, so if no errors occur, they return the same checksum for the same file.
+
+It would be expected that the runtime would decrease as the number of threads or processes increases, however, this is unclear. One limitation is that the
+environment performing the testing is a virtual machine allocated two processors. I am not sure how effective this virtualization is. I expect different results
+on a machine running native Linux.
+
+Anyway, the results!
+
+For a file of 11.2KB (the in.png from HW1)
+Its checksum is 101.
+
+Threaded (5-runs average, "sys time"):
+1: 0.0016s
+2: 0.0016s
+4: 0.0032s
+8: 0.0040s
+
+Processed (5-runs average, "sys time"):
+1: 0.0000s
+2: 0.0000s
+4: 0.0000s
+8: 0.0032s
+
+For a large image of the Holy Roman Empire of 24.4MB
+Its checksum is 5
+
+Threaded (5-runs average, "sys time"):
+1: 0.0304s
+2: 0.0344s
+4: 0.0720s
+8: 0.0720s
+
+Processed (5-runs average, "sys time"):
+1: CRASH
+2: CRASH
+4: 0.0752s
+8: 0.0800s
+This file crashes on any number of processes less than 3 for this file. Does that mean its limit is between 6-8 MB per chunk?
+The thread applications seem to drop off in effciency after 2 threads. Not surprising as only two CPUs are availble for computation.
+Any threads beyond this point just add overhead.
+Processed method seems to be faster for both sizes. Also, the time call seems to have a resolution of 1/250th of a second making some
+situations return a time of 0.0000s.
